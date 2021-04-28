@@ -33,7 +33,7 @@ class SpotifyLogin
          $solved->setDuration($end[1] - $start[1]);
 
          return $solved;
-     }
+    }
 
     /**
      * @param array $trailingData

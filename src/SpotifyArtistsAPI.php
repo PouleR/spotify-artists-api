@@ -167,7 +167,7 @@ class SpotifyArtistsAPI
 
         $loginResponse = $this->client->loginRequest($loginRequest);
 
-        return $this->createAccessToken( $loginResponse->getOk());
+        return $this->createAccessToken($loginResponse->getOk());
     }
 
     /**
