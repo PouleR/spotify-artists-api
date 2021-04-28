@@ -1,0 +1,10 @@
+# IDE
+/.idea/
+
+# PHP Unit
+.phpunit.result.cache
+
+# Composer
+composer.lock
+composer.phar
+/vendor/
