@@ -64,7 +64,8 @@ class SpotifyArtistsAPIClient
                 [
                     'headers' => $headers,
                     'body' => $loginRequest->serializeToString(),
-            ]);
+                ]
+            );
 
             $loginResponse = new LoginResponse();
             $loginResponse->mergeFromString($response->getContent());
