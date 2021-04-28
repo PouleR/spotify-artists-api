@@ -60,7 +60,8 @@ class SpotifyArtistsAPIClient
         try {
             $response = $this->httpClient->request(
                 'POST',
-                SpotifyLogin::LOGIN_URL, [
+                SpotifyLogin::LOGIN_URL,
+                [
                     'headers' => $headers,
                     'body' => $loginRequest->serializeToString(),
             ]);
