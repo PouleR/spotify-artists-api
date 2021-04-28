@@ -25,3 +25,34 @@ proto/spotify/login5/v3/login5.proto \
   proto/spotify/login5/v3/challenges/hashcash.proto \
   proto/spotify/login5/v3/credentials/credentials.proto \
   proto/spotify/login5/v3/identifiers/identifiers.proto`
+
+## Example usage
+```php
+<?php declare(strict_types=1);
+
+use PouleR\SpotifyArtistsAPI\SpotifyArtistsAPIClient;
+
+require 'vendor/autoload.php';
+
+$httpClient = new \Symfony\Component\HttpClient\CurlHttpClient();
+$client = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPIClient($httpClient);
+$spotifyApi = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPI($client);
+
+$spotifyApi->setClientId('clientId');
+$spotifyApi->setDeviceId('deviceId');
+
+// Log in and get the access token
+$token = $spotifyApi->login('email@address.com','password');
+$spotifyApi->setAccessToken($token->getAccessToken());
+$upcoming = $spotifyApi->getUpcomingReleases('artistId');
+
+print_r($upcoming);
+
+// Use the current token to get a new one
+$newToken = $spotifyApi->refreshToken($token->getUsername(), $token->getRefreshToken());
+$spotifyApi->setAccessToken($newToken->getAccessToken());
+
+$realtime = $spotifyApi->getRealTimeStatistics('artistId', 'trackId');
+
+print_r($realtime);
+```
