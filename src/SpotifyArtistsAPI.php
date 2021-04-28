@@ -5,6 +5,7 @@ namespace PouleR\SpotifyArtistsAPI;
 use Google\Protobuf\Duration;
 use PouleR\SpotifyArtistsAPI\Entity\AccessToken;
 use PouleR\SpotifyArtistsAPI\Entity\RealTimeStatistics;
+use PouleR\SpotifyArtistsAPI\Entity\RecordingStatistic;
 use PouleR\SpotifyArtistsAPI\Entity\UpcomingRelease;
 use PouleR\SpotifyArtistsAPI\Exception\SpotifyArtistsAPIException;
 use PouleR\SpotifyArtistsAPI\Util\HexUtils;
@@ -141,6 +142,52 @@ class SpotifyArtistsAPI
         }
 
         return $upcomingReleases;
+    }
+
+    /**
+     * @param string $artistId
+     * @param string $timeFilter
+     *
+     * @return RecordingStatistic[]
+     *
+     * @throws SpotifyArtistsAPIException
+     */
+    public function getRecordingStatistics(string $artistId, string $timeFilter = 'all'): array
+    {
+        $allowedTimeFilters = [
+            '1day',
+            '7day',
+            '28day',
+            'last5years',
+            'all'
+        ];
+
+        if (!in_array($timeFilter, $allowedTimeFilters)) {
+            throw new SpotifyArtistsAPIException('Invalid time filter given: ' . $timeFilter);
+        }
+
+        $recordingStats = [];
+        try {
+            $path = sprintf('%s/recordings?aggregation-level=recording&time-filter=%s', $artistId, $timeFilter);
+            $response = $this->client->apiRequest(
+                'GET',
+                $path,
+                'https://generic.wg.spotify.com/s4x-insights-api/v2/artist/'
+            );
+
+            foreach ($response['recordingStats'] as $recording) {
+                if (!$recording) {
+                    continue;
+                }
+
+                $recordingStats[] = $this->normalizer->denormalize($recording, RecordingStatistic::class);
+            }
+        } catch (\Exception | \Throwable $exception) {
+            $this->logError(__FUNCTION__, $exception);
+        }
+
+
+        return $recordingStats;
     }
 
     /**
