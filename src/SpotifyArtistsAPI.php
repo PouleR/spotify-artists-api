@@ -4,6 +4,7 @@ namespace PouleR\SpotifyArtistsAPI;
 
 use Google\Protobuf\Duration;
 use PouleR\SpotifyArtistsAPI\Entity\AccessToken;
+use PouleR\SpotifyArtistsAPI\Entity\EngagementStatistic;
 use PouleR\SpotifyArtistsAPI\Entity\RealTimeStatistics;
 use PouleR\SpotifyArtistsAPI\Entity\RecordingStatistic;
 use PouleR\SpotifyArtistsAPI\Entity\UpcomingRelease;
@@ -18,6 +19,7 @@ use Spotify\Login5\V3\ChallengeSolutions;
 use Spotify\Login5\V3\ClientInfo;
 use Spotify\Login5\V3\Credentials\Password;
 use Spotify\Login5\V3\Credentials\StoredCredential;
+use Spotify\Login5\V3\LoginOk;
 use Spotify\Login5\V3\LoginRequest;
 use Spotify\Login5\V3\LoginResponse;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
@@ -186,19 +188,43 @@ class SpotifyArtistsAPI
             $this->logError(__FUNCTION__, $exception);
         }
 
-
         return $recordingStats;
+    }
+
+    /**
+     * @param string $artistId
+     * @param string $countryCode
+     * @param string $timeFilter
+     *
+     * @return EngagementStatistic|null
+     */
+    public function getEngagementStatistics(string $artistId, string $countryCode = '', string $timeFilter = '28day'): ?EngagementStatistic
+    {
+        try {
+            $path = sprintf('%s/stats?time-filter=%s', $artistId, $timeFilter);
+            if (!empty($countryCode)) {
+                $path .= sprintf('&country=%s', $countryCode);
+            }
+
+            $response = $this->client->apiRequest('GET', $path);
+
+            return $this->normalizer->denormalize($response, EngagementStatistic::class);
+        } catch (\Exception | \Throwable $exception) {
+            $this->logError(__FUNCTION__, $exception);
+        }
+
+        return null;
     }
 
     /**
      * @param string $username
      * @param string $refreshToken
      *
-     * @return AccessToken
+     * @return AccessToken|null
      *
      * @throws SpotifyArtistsAPIException
      */
-    public function refreshToken(string $username, string $refreshToken): AccessToken
+    public function refreshToken(string $username, string $refreshToken): ?AccessToken
     {
         $clientInfo = new ClientInfo();
         $clientInfo->setClientId($this->clientId);
@@ -221,11 +247,11 @@ class SpotifyArtistsAPI
      * @param string $username
      * @param string $password
      *
-     * @return AccessToken
+     * @return AccessToken|null
      *
      * @throws SpotifyArtistsAPIException
      */
-    public function login(string $username, string $password): AccessToken
+    public function login(string $username, string $password): ?AccessToken
     {
         $clientInfo = new ClientInfo();
         $clientInfo->setClientId($this->clientId);
@@ -306,10 +332,15 @@ class SpotifyArtistsAPI
 
     /**
      * @param \Spotify\Login5\V3\LoginOk|null $okResponse
-     * @return AccessToken
+     *
+     * @return AccessToken|null
      */
-    private function createAccessToken(?\Spotify\Login5\V3\LoginOk $okResponse): AccessToken
+    private function createAccessToken(?LoginOk $okResponse): ?AccessToken
     {
+        if (!$okResponse) {
+            return null;
+        }
+
         $spotifyAccessToken = new AccessToken();
 
         return $spotifyAccessToken
