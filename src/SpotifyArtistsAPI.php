@@ -2,9 +2,12 @@
 
 namespace PouleR\SpotifyArtistsAPI;
 
+use Exception;
 use Google\Protobuf\Duration;
 use PouleR\SpotifyArtistsAPI\Entity\AccessToken;
 use PouleR\SpotifyArtistsAPI\Entity\EngagementStatistic;
+use PouleR\SpotifyArtistsAPI\Entity\PlaylistStatistic;
+use PouleR\SpotifyArtistsAPI\Entity\PlaylistStatistics;
 use PouleR\SpotifyArtistsAPI\Entity\RealTimeStatistics;
 use PouleR\SpotifyArtistsAPI\Entity\RecordingStatistic;
 use PouleR\SpotifyArtistsAPI\Entity\UpcomingRelease;
@@ -24,6 +27,7 @@ use Spotify\Login5\V3\LoginRequest;
 use Spotify\Login5\V3\LoginResponse;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Throwable;
 
 /**
  * Class SpotifyArtistsAPI
@@ -108,7 +112,7 @@ class SpotifyArtistsAPI
             $response = $this->client->apiRequest('GET', $url);
 
             return $this->normalizer->denormalize($response, RealTimeStatistics::class);
-        } catch (\Exception | \Throwable $exception) {
+        } catch (Exception | Throwable $exception) {
             $this->logError(__FUNCTION__, $exception);
         }
 
@@ -139,7 +143,7 @@ class SpotifyArtistsAPI
 
                 $upcomingReleases[] = $this->normalizer->denormalize($upcoming['release'], UpcomingRelease::class);
             }
-        } catch (\Exception | \Throwable $exception) {
+        } catch (Exception | Throwable $exception) {
             $this->logError(__FUNCTION__, $exception);
         }
 
@@ -156,19 +160,9 @@ class SpotifyArtistsAPI
      */
     public function getRecordingStatistics(string $artistId, string $timeFilter = 'all'): array
     {
-        $allowedTimeFilters = [
-            '1day',
-            '7day',
-            '28day',
-            'last5years',
-            'all'
-        ];
-
-        if (!in_array($timeFilter, $allowedTimeFilters)) {
-            throw new SpotifyArtistsAPIException('Invalid time filter given: ' . $timeFilter);
-        }
-
         $recordingStats = [];
+        $this->validateTimeFilter($timeFilter);
+
         try {
             $path = sprintf('%s/recordings?aggregation-level=recording&time-filter=%s', $artistId, $timeFilter);
             $response = $this->client->apiRequest(
@@ -184,7 +178,7 @@ class SpotifyArtistsAPI
 
                 $recordingStats[] = $this->normalizer->denormalize($recording, RecordingStatistic::class);
             }
-        } catch (\Exception | \Throwable $exception) {
+        } catch (Exception | Throwable $exception) {
             $this->logError(__FUNCTION__, $exception);
         }
 
@@ -209,7 +203,42 @@ class SpotifyArtistsAPI
             $response = $this->client->apiRequest('GET', $path);
 
             return $this->normalizer->denormalize($response, EngagementStatistic::class);
-        } catch (\Exception | \Throwable $exception) {
+        } catch (Exception | Throwable $exception) {
+            $this->logError(__FUNCTION__, $exception);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $artistId
+     * @param string $playlistType
+     * @param string $timeFilter
+     *
+     * @return null|PlaylistStatistics
+     *
+     * @throws SpotifyArtistsAPIException
+     */
+    public function getPlaylistStatistics(string $artistId, string $playlistType, string $timeFilter = '7day'): ?PlaylistStatistics
+    {
+        $allowedPlaylistTypes = [
+            'personalized', // Algorithmic
+            'curated', // Editorial
+            'listener',
+        ];
+
+        if (!in_array($playlistType, $allowedPlaylistTypes)) {
+            throw new SpotifyArtistsAPIException('Invalid playlist type given: ' . $playlistType);
+        }
+
+        $this->validateTimeFilter($timeFilter);
+
+        try {
+            $path = sprintf('%s/playlists/%s?time-filter=%s', $artistId, $playlistType, $timeFilter);
+            $response = $this->client->apiRequest('GET', $path);
+
+            return $this->normalizer->denormalize($response, PlaylistStatistics::class);
+        } catch (Exception | Throwable $exception) {
             $this->logError(__FUNCTION__, $exception);
         }
 
@@ -284,7 +313,7 @@ class SpotifyArtistsAPI
      *
      * @return ChallengeSolutions
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function solveHashCashChallenge(LoginResponse $loginResponse): ChallengeSolutions
     {
@@ -319,9 +348,9 @@ class SpotifyArtistsAPI
 
     /**
      * @param string     $method
-     * @param \Exception $exception
+     * @param Exception $exception
      */
-    private function logError(string $method, \Exception $exception)
+    private function logError(string $method, Exception $exception)
     {
         $this->logger->error('Error during API Request', [
             'method' => $method,
@@ -348,5 +377,25 @@ class SpotifyArtistsAPI
             ->setExpiresIn($okResponse->getAccessTokenExpiresIn())
             ->setRefreshToken($okResponse->getStoredCredential())
             ->setUsername($okResponse->getUsername());
+    }
+
+    /**
+     * @param string $timeFilter
+     *
+     * @throws SpotifyArtistsAPIException
+     */
+    private function validateTimeFilter(string $timeFilter): void
+    {
+        $allowedTimeFilters = [
+            '1day',
+            '7day',
+            '28day',
+            'last5years',
+            'all'
+        ];
+
+        if (!in_array($timeFilter, $allowedTimeFilters)) {
+            throw new SpotifyArtistsAPIException('Invalid time filter given: ' . $timeFilter);
+        }
     }
 }
