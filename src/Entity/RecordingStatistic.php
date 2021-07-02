@@ -2,63 +2,26 @@
 
 namespace PouleR\SpotifyArtistsAPI\Entity;
 
+use DateTime;
+
 /**
  * Class RecordingStatistic
  */
 class RecordingStatistic
 {
-    /**
-     * @var string
-     */
-    private $canonicalTrackGid = '';
-
-    /**
-     * @var int
-     */
-    private $numStreams = 0;
-
-    /**
-     * @var int
-     */
-    private $numCanvasViews = 0;
-
-    /**
-     * @var int
-     */
-    private $numListeners = 0;
-
-    /**
-     * @var int
-     */
-    private $numSavers = 0;
-
-    /**
-     * @var bool
-     */
-    private $hasLimitedRights = false;
-
-    /**
-     * @var bool
-     */
-    private $isDisabled = false;
-
-    /**
-     * @var string
-     */
-    private $pictureUri = '';
-
-    /**
-     * @var \DateTime
-     */
-    private $releaseDate;
-
-    private $showSplitRightsBadge = false;
-
-    private $trackName = '';
-
-    private $trackUri = '';
-
-    private $trend = 0;
+    private string $canonicalTrackGid = '';
+    private ?int $numStreams = null;
+    private ?int $numCanvasViews = null;
+    private ?int $numListeners = null;
+    private ?int $numSavers = null;
+    private bool $hasLimitedRights = false;
+    private bool $isDisabled = false;
+    private string $pictureUri = '';
+    private ?DateTime $releaseDate = null;
+    private bool $showSplitRightsBadge = false;
+    private string $trackName = '';
+    private string $trackUri = '';
+    private ?int $trend = null;
 
     /**
      * @return string
@@ -81,19 +44,19 @@ class RecordingStatistic
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getNumStreams(): int
+    public function getNumStreams(): ?int
     {
         return $this->numStreams;
     }
 
     /**
-     * @param int $numStreams
+     * @param int|null $numStreams
      *
      * @return RecordingStatistic
      */
-    public function setNumStreams(int $numStreams): RecordingStatistic
+    public function setNumStreams(?int $numStreams): RecordingStatistic
     {
         $this->numStreams = $numStreams;
 
@@ -121,9 +84,69 @@ class RecordingStatistic
     }
 
     /**
-     * @return \DateTime
+     * @return int|null
      */
-    public function getReleaseDate(): \DateTime
+    public function getNumCanvasViews(): ?int
+    {
+        return $this->numCanvasViews;
+    }
+
+    /**
+     * @param int|null $numCanvasViews
+     *
+     * @return RecordingStatistic
+     */
+    public function setNumCanvasViews(?int $numCanvasViews): RecordingStatistic
+    {
+        $this->numCanvasViews = $numCanvasViews;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getNumListeners(): ?int
+    {
+        return $this->numListeners;
+    }
+
+    /**
+     * @param int|null $numListeners
+     *
+     * @return RecordingStatistic
+     */
+    public function setNumListeners(?int $numListeners): RecordingStatistic
+    {
+        $this->numListeners = $numListeners;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getNumSavers(): ?int
+    {
+        return $this->numSavers;
+    }
+
+    /**
+     * @param int|null $numSavers
+     *
+     * @return RecordingStatistic
+     */
+    public function setNumSavers(?int $numSavers): RecordingStatistic
+    {
+        $this->numSavers = $numSavers;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getReleaseDate(): ?DateTime
     {
         return $this->releaseDate;
     }
@@ -137,67 +160,7 @@ class RecordingStatistic
      */
     public function setReleaseDate(string $releaseDate): RecordingStatistic
     {
-        $this->releaseDate = new \DateTime($releaseDate);
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumCanvasViews(): int
-    {
-        return $this->numCanvasViews;
-    }
-
-    /**
-     * @param int $numCanvasViews
-     *
-     * @return RecordingStatistic
-     */
-    public function setNumCanvasViews(int $numCanvasViews): RecordingStatistic
-    {
-        $this->numCanvasViews = $numCanvasViews;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumListeners(): int
-    {
-        return $this->numListeners;
-    }
-
-    /**
-     * @param int $numListeners
-     *
-     * @return RecordingStatistic
-     */
-    public function setNumListeners(int $numListeners): RecordingStatistic
-    {
-        $this->numListeners = $numListeners;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumSavers(): int
-    {
-        return $this->numSavers;
-    }
-
-    /**
-     * @param int $numSavers
-     *
-     * @return RecordingStatistic
-     */
-    public function setNumSavers(int $numSavers): RecordingStatistic
-    {
-        $this->numSavers = $numSavers;
+        $this->releaseDate = new DateTime($releaseDate);
 
         return $this;
     }
@@ -303,19 +266,19 @@ class RecordingStatistic
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getTrend(): int
+    public function getTrend(): ?int
     {
         return $this->trend;
     }
 
     /**
-     * @param int $trend
+     * @param int|null $trend
      *
      * @return RecordingStatistic
      */
-    public function setTrend(int $trend): RecordingStatistic
+    public function setTrend(?int $trend): RecordingStatistic
     {
         $this->trend = $trend;
 

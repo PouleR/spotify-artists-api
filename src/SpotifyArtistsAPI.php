@@ -6,7 +6,6 @@ use Exception;
 use Google\Protobuf\Duration;
 use PouleR\SpotifyArtistsAPI\Entity\AccessToken;
 use PouleR\SpotifyArtistsAPI\Entity\EngagementStatistic;
-use PouleR\SpotifyArtistsAPI\Entity\PlaylistStatistic;
 use PouleR\SpotifyArtistsAPI\Entity\PlaylistStatistics;
 use PouleR\SpotifyArtistsAPI\Entity\RealTimeStatistics;
 use PouleR\SpotifyArtistsAPI\Entity\RecordingStatistic;

@@ -7,15 +7,8 @@ namespace PouleR\SpotifyArtistsAPI\Entity;
  */
 class RealTimeStatistics
 {
-    /**
-     * @var int
-     */
-    protected $totalStreams = 0;
-
-    /**
-     * @var string|null
-     */
-    protected $websocketUrl = null;
+    private int $totalStreams = 0;
+    private ?string $websocketUrl = null;
 
     /**
      * @return int

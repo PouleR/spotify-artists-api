@@ -2,45 +2,20 @@
 
 namespace PouleR\SpotifyArtistsAPI\Entity;
 
+use DateTime;
+
 /**
  * Class UpcomingRelease
  */
 class UpcomingRelease
 {
-    /**
-     * @var string
-     */
-    private $id = '';
-
-    /**
-     * @var string
-     */
-    private $imageUrl = '';
-
-    /**
-     * @var string
-     */
-    private $name = '';
-
-    /**
-     * @var int
-     */
-    private $numTracks = 0;
-
-    /**
-     * @var \DateTime
-     */
-    private $releaseDate;
-
-    /**
-     * @var string
-     */
-    private $releaseType = '';
-
-    /**
-     * @var bool
-     */
-    private $submissionOnRelease = false;
+    private string $id = '';
+    private string $imageUrl = '';
+    private string $name = '';
+    private int $numTracks = 0;
+    private ?DateTime $releaseDate = null;
+    private string $releaseType = '';
+    private bool $submissionOnRelease = false;
 
     /**
      * @return string
@@ -123,9 +98,9 @@ class UpcomingRelease
     }
 
     /**
-     * @return \DateTime
+     * @return null|DateTime
      */
-    public function getReleaseDate(): \DateTime
+    public function getReleaseDate(): ?DateTime
     {
         return $this->releaseDate;
     }
@@ -139,7 +114,7 @@ class UpcomingRelease
      */
     public function setReleaseDate(string $releaseDate): UpcomingRelease
     {
-        $this->releaseDate = new \DateTime($releaseDate);
+        $this->releaseDate = new DateTime($releaseDate);
 
         return $this;
     }

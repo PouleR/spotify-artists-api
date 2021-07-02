@@ -3,6 +3,8 @@
 namespace PouleR\SpotifyArtistsAPI\Entity;
 
 use DateTime;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
  * Class PlaylistStatistic
@@ -10,11 +12,11 @@ use DateTime;
 class PlaylistStatistic
 {
     private string $author = '';
-    private DateTime $dateAdded;
-    private int $followers = 0;
-    private int $listeners = 0;
-    private int $numTracks = 0;
-    private int $streams = 0;
+    private ?DateTime $dateAdded = null;
+    private ?int $followers = null;
+    private ?int $listeners = null;
+    private ?int $numTracks = null;
+    private ?int $streams = null;
     private string $thumbnailUrl = '';
     private string $title = '';
     private string $uri = '';
@@ -45,39 +47,41 @@ class PlaylistStatistic
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getDateAdded(): DateTime
+    public function getDateAdded(): ?DateTime
     {
         return $this->dateAdded;
     }
 
     /**
-     * @param DateTime $dateAdded
+     * @param string $dateAdded
      *
      * @return PlaylistStatistic
+     *
+     * @throws \Exception
      */
-    public function setDateAdded(DateTime $dateAdded): PlaylistStatistic
+    public function setDateAdded(string $dateAdded): PlaylistStatistic
     {
-        $this->dateAdded = $dateAdded;
+        $this->dateAdded = new DateTime($dateAdded);
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getFollowers(): int
+    public function getFollowers(): ?int
     {
         return $this->followers;
     }
 
     /**
-     * @param int $followers
+     * @param int|null $followers
      *
      * @return PlaylistStatistic
      */
-    public function setFollowers(int $followers): PlaylistStatistic
+    public function setFollowers(?int $followers): PlaylistStatistic
     {
         $this->followers = $followers;
 
@@ -85,19 +89,19 @@ class PlaylistStatistic
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getListeners(): int
+    public function getListeners(): ?int
     {
         return $this->listeners;
     }
 
     /**
-     * @param int $listeners
+     * @param int|null $listeners
      *
      * @return PlaylistStatistic
      */
-    public function setListeners(int $listeners): PlaylistStatistic
+    public function setListeners(?int $listeners): PlaylistStatistic
     {
         $this->listeners = $listeners;
 
@@ -105,19 +109,19 @@ class PlaylistStatistic
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getNumTracks(): int
+    public function getNumTracks(): ?int
     {
         return $this->numTracks;
     }
 
     /**
-     * @param int $numTracks
+     * @param int|null $numTracks
      *
      * @return PlaylistStatistic
      */
-    public function setNumTracks(int $numTracks): PlaylistStatistic
+    public function setNumTracks(?int $numTracks): PlaylistStatistic
     {
         $this->numTracks = $numTracks;
 
@@ -125,19 +129,19 @@ class PlaylistStatistic
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getStreams(): int
+    public function getStreams(): ?int
     {
         return $this->streams;
     }
 
     /**
-     * @param int $streams
+     * @param int|null $streams
      *
      * @return PlaylistStatistic
      */
-    public function setStreams(int $streams): PlaylistStatistic
+    public function setStreams(?int $streams): PlaylistStatistic
     {
         $this->streams = $streams;
 
@@ -218,7 +222,11 @@ class PlaylistStatistic
      */
     public function setTrackStats(array $trackStats): PlaylistStatistic
     {
-        $this->trackStats = $trackStats;
+        $normalizer = new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter());
+
+        foreach ($trackStats as $recordingStatistic) {
+            $this->trackStats[] = $normalizer->denormalize($recordingStatistic, RecordingStatistic::class);
+        }
 
         return $this;
     }

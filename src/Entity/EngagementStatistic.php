@@ -7,50 +7,27 @@ namespace PouleR\SpotifyArtistsAPI\Entity;
  */
 class EngagementStatistic
 {
-    /**
-     * @var int
-     */
-    private $listeners;
+    private ?int  $listeners = null;
+    private ?int $streams = null;
+    private ?float $streamsByListener = null;
+    private ?int $playlistAdds = null;
+    private ?int $saves = null;
+    private ?float $intentRate = null;
 
     /**
-     * @var int
+     * @return int|null
      */
-    private $streams;
-
-    /**
-     * @var float
-     */
-    private $streamsByListener;
-
-    /**
-     * @var int
-     */
-    private $playlistAdds;
-
-    /**
-     * @var int
-     */
-    private $saves;
-
-    /**
-     * @var float
-     */
-    private $intentRate;
-
-    /**
-     * @return int
-     */
-    public function getListeners(): int
+    public function getListeners(): ?int
     {
         return $this->listeners;
     }
 
     /**
-     * @param int $listeners
+     * @param int|null $listeners
      *
      * @return EngagementStatistic
      */
-    public function setListeners(int $listeners): EngagementStatistic
+    public function setListeners(?int $listeners): EngagementStatistic
     {
         $this->listeners = $listeners;
 
@@ -58,19 +35,19 @@ class EngagementStatistic
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getStreams(): int
+    public function getStreams(): ?int
     {
         return $this->streams;
     }
 
     /**
-     * @param int $streams
+     * @param int|null $streams
      *
      * @return EngagementStatistic
      */
-    public function setStreams(int $streams): EngagementStatistic
+    public function setStreams(?int $streams): EngagementStatistic
     {
         $this->streams = $streams;
 
@@ -78,19 +55,19 @@ class EngagementStatistic
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getStreamsByListener(): float
+    public function getStreamsByListener(): ?float
     {
         return $this->streamsByListener;
     }
 
     /**
-     * @param float $streamsByListener
+     * @param float|null $streamsByListener
      *
      * @return EngagementStatistic
      */
-    public function setStreamsByListener(float $streamsByListener): EngagementStatistic
+    public function setStreamsByListener(?float $streamsByListener): EngagementStatistic
     {
         $this->streamsByListener = $streamsByListener;
 
@@ -98,19 +75,19 @@ class EngagementStatistic
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getPlaylistAdds(): int
+    public function getPlaylistAdds(): ?int
     {
         return $this->playlistAdds;
     }
 
     /**
-     * @param int $playlistAdds
+     * @param int|null $playlistAdds
      *
      * @return EngagementStatistic
      */
-    public function setPlaylistAdds(int $playlistAdds): EngagementStatistic
+    public function setPlaylistAdds(?int $playlistAdds): EngagementStatistic
     {
         $this->playlistAdds = $playlistAdds;
 
@@ -118,19 +95,19 @@ class EngagementStatistic
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getSaves(): int
+    public function getSaves(): ?int
     {
         return $this->saves;
     }
 
     /**
-     * @param int $saves
+     * @param int|null $saves
      *
      * @return EngagementStatistic
      */
-    public function setSaves(int $saves): EngagementStatistic
+    public function setSaves(?int $saves): EngagementStatistic
     {
         $this->saves = $saves;
 
@@ -138,22 +115,21 @@ class EngagementStatistic
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getIntentRate(): float
+    public function getIntentRate(): ?float
     {
         return $this->intentRate;
     }
 
     /**
-     * @param float $intentRate
+     * @param float|null $intentRate
      *
      * @return EngagementStatistic
      */
-    public function setIntentRate(float $intentRate): EngagementStatistic
+    public function setIntentRate(?float $intentRate): EngagementStatistic
     {
         $this->intentRate = $intentRate;
-
         return $this;
     }
 }

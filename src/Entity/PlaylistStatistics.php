@@ -2,6 +2,9 @@
 
 namespace PouleR\SpotifyArtistsAPI\Entity;
 
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 /**
  * Class PlaylistStatistics
  */
@@ -28,7 +31,11 @@ class PlaylistStatistics
      */
     public function setData(array $data): PlaylistStatistics
     {
-        $this->data = $data;
+        $normalizer = new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter());
+
+        foreach ($data as $playlistStatistic) {
+            $this->data[] = $normalizer->denormalize($playlistStatistic, PlaylistStatistic::class);
+        }
 
         return $this;
     }
