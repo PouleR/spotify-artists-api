@@ -245,6 +245,16 @@ class SpotifyArtistsAPI
     }
 
     /**
+     * @param string $artistId
+     *
+     * @return string
+     */
+    public function getRealtimeArtistListenersUrl(string $artistId): string
+    {
+        return sprintf('wss://artistinsights-realtime3.spotify.com/ws/artist/listeners/%s', $artistId);
+    }
+
+    /**
      * @param string $username
      * @param string $refreshToken
      *
