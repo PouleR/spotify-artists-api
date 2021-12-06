@@ -14,6 +14,7 @@ class PlaylistStatistic
     private string $author = '';
     private ?DateTime $dateAdded = null;
     private ?int $followers = null;
+    private ?bool $isAlgotorial =  null;
     private ?int $listeners = null;
     private ?int $numTracks = null;
     private ?int $streams = null;
@@ -77,13 +78,33 @@ class PlaylistStatistic
     }
 
     /**
-     * @param int|null $followers
+     * @param int|string|null $followers
      *
      * @return PlaylistStatistic
      */
-    public function setFollowers(?int $followers): PlaylistStatistic
+    public function setFollowers($followers): PlaylistStatistic
     {
-        $this->followers = $followers;
+        $this->followers = is_null($followers) ? $followers : (int) $followers;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsAlgotorial(): ?bool
+    {
+        return $this->isAlgotorial;
+    }
+
+    /**
+     * @param bool|null $isAlgotorial
+     *
+     * @return PlaylistStatistic
+     */
+    public function setIsAlgotorial(?bool $isAlgotorial): PlaylistStatistic
+    {
+        $this->isAlgotorial = $isAlgotorial;
 
         return $this;
     }
@@ -137,13 +158,13 @@ class PlaylistStatistic
     }
 
     /**
-     * @param int|null $streams
+     * @param int|string|null $streams
      *
      * @return PlaylistStatistic
      */
-    public function setStreams(?int $streams): PlaylistStatistic
+    public function setStreams($streams): PlaylistStatistic
     {
-        $this->streams = $streams;
+        $this->streams = is_null($streams) ? $streams : (int) $streams;
 
         return $this;
     }

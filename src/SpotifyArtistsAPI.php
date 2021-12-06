@@ -246,6 +246,56 @@ class SpotifyArtistsAPI
 
     /**
      * @param string $artistId
+     * @param string $trackId
+     * @param string $timeFilter
+     *
+     * @return PlaylistStatistics|null
+     *
+     * @throws SpotifyArtistsAPIException
+     */
+    public function getRecentPlaylistAdditions(string $artistId, string $trackId, string $timeFilter = '7day'): ?PlaylistStatistics
+    {
+        $this->validateTimeFilter($timeFilter);
+
+        try {
+            $path = sprintf('%s/recording/%s/recent-playlists?time-filter=%s&aggregation-level=recording', $artistId, $trackId, $timeFilter);
+            $response = $this->client->apiRequest('GET', $path);
+
+            return $this->normalizer->denormalize($response, PlaylistStatistics::class);
+        } catch (Exception | Throwable $exception) {
+            $this->logError(__FUNCTION__, $exception);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $artistId
+     * @param string $trackId
+     * @param string $timeFilter
+     *
+     * @return PlaylistStatistics|null
+     *
+     * @throws SpotifyArtistsAPIException
+     */
+    public function getTopPlaylists(string $artistId, string $trackId, string $timeFilter = '28day'): ?PlaylistStatistics
+    {
+        $this->validateTimeFilter($timeFilter);
+
+        try {
+            $path = sprintf('%s/recording/%s/top-playlists?time-filter=%s&aggregation-level=recording', $artistId, $trackId, $timeFilter);
+            $response = $this->client->apiRequest('GET', $path);
+
+            return $this->normalizer->denormalize($response, PlaylistStatistics::class);
+        } catch (Exception | Throwable $exception) {
+            $this->logError(__FUNCTION__, $exception);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $artistId
      *
      * @return string
      */
