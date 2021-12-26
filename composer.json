@@ -18,10 +18,10 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-json": "*",
-        "symfony/http-client": "^4.3|^4.4|^5.0",
         "google/protobuf": "^3.15",
-        "symfony/serializer": "^4.3|^4.4|^5",
-        "symfony/property-access": "^4.3|^4.4|^5"
+        "symfony/http-client": "^4.3|^4.4|^5.0|^6",
+        "symfony/property-access": "^4.3|^4.4|^5|^6",
+        "symfony/serializer": "^4.3|^4.4|^5|^6"
     },
     "autoload": {
         "psr-4": {
