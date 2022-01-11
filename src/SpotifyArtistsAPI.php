@@ -304,9 +304,9 @@ class SpotifyArtistsAPI
 
     /**
      * @param string     $method
-     * @param Exception $exception
+     * @param Throwable $exception
      */
-    private function logError(string $method, Exception $exception)
+    private function logError(string $method, Throwable $exception)
     {
         $this->logger->error('Error during API Request', [
             'method' => $method,
