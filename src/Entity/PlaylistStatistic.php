@@ -237,7 +237,7 @@ class PlaylistStatistic
     }
 
     /**
-     * @param RecordingStatistic[] $trackStats
+     * @param array $trackStats
      *
      * @return PlaylistStatistic
      */

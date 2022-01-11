@@ -25,7 +25,7 @@ class PlaylistStatistics
     }
 
     /**
-     * @param PlaylistStatistic[] $data
+     * @param array $data
      *
      * @return PlaylistStatistics
      */
