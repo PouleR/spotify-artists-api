@@ -3,9 +3,6 @@
 namespace PouleR\SpotifyArtistsAPI;
 
 use PouleR\SpotifyArtistsAPI\Exception\SpotifyArtistsAPIException;
-use Spotify\Login5\V3\LoginError;
-use Spotify\Login5\V3\LoginRequest;
-use Spotify\Login5\V3\LoginResponse;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -18,19 +15,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class SpotifyArtistsAPIClient
 {
     private const ARTISTS_API_URL = 'https://generic.wg.spotify.com/s4x-insights-api/v1/artist/';
+    protected HttpClientInterface $httpClient;
+    protected string $accessToken = '';
 
     /**
-     * @var HttpClientInterface
-     */
-    protected $httpClient;
-
-    /**
-     * @var string
-     */
-    protected $accessToken = '';
-
-    /**
-     * SpotifyArtistsAPIClient constructor.
      * @param HttpClientInterface $httpClient
      */
     public function __construct(HttpClientInterface $httpClient)
@@ -44,43 +32,6 @@ class SpotifyArtistsAPIClient
     public function setAccessToken(string $accessToken): void
     {
         $this->accessToken = $accessToken;
-    }
-
-    /**
-     * @param LoginRequest $loginRequest
-     *
-     * @return LoginResponse
-     *
-     * @throws SpotifyArtistsAPIException
-     */
-    public function loginRequest(LoginRequest $loginRequest)
-    {
-        $headers[] = 'Content-Type: application/x-protobuf';
-
-        try {
-            $response = $this->httpClient->request(
-                'POST',
-                SpotifyLogin::LOGIN_URL,
-                [
-                    'headers' => $headers,
-                    'body' => $loginRequest->serializeToString(),
-                ]
-            );
-
-            $loginResponse = new LoginResponse();
-            $loginResponse->mergeFromString($response->getContent());
-
-            if ($loginResponse->getError()) {
-                throw new SpotifyArtistsAPIException('Response error: ' . LoginError::name($loginResponse->getError()));
-            }
-
-            return $loginResponse;
-        } catch (ServerExceptionInterface | ClientExceptionInterface | RedirectionExceptionInterface | TransportExceptionInterface | \Exception $exception) {
-            throw new SpotifyArtistsAPIException(
-                'Login request: ' . $exception->getMessage(),
-                $exception->getCode()
-            );
-        }
     }
 
     /**

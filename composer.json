@@ -11,6 +11,9 @@
     "keywords": [ "spotify", "api" ],
     "homepage": "https://github.com/PouleR/spotify-artists-api",
     "type": "library",
+    "config": {
+        "sort-packages": true
+    },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.0",
         "phpunit/phpunit": "^9"
@@ -18,15 +21,14 @@
     "require": {
         "php": "^7.4|^8.0",
         "ext-json": "*",
-        "google/protobuf": "^3.15",
+        "pouler/spotify-login": "^v0.1",
         "symfony/http-client": "^4.3|^4.4|^5.0|^6",
         "symfony/property-access": "^4.3|^4.4|^5|^6",
         "symfony/serializer": "^4.3|^4.4|^5|^6"
     },
     "autoload": {
         "psr-4": {
-            "PouleR\\SpotifyArtistsAPI\\": "src/",
-            "": "generated"
+            "PouleR\\SpotifyArtistsAPI\\": "src/"
         }
     },
     "autoload-dev": {
