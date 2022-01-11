@@ -45,7 +45,7 @@ class SpotifyArtistsAPIClient
      *
      * @throws SpotifyArtistsAPIException
      */
-    public function apiRequest(string $method, string $service, $baseUrl = null, array $headers = [], $body = null)
+    public function apiRequest(string $method, string $service, string $baseUrl = null, array $headers = [], $body = null)
     {
         $requestUrl = sprintf('%s%s', empty($baseUrl) ? self::ARTISTS_API_URL : $baseUrl, $service);
 
@@ -54,7 +54,7 @@ class SpotifyArtistsAPIClient
             $response = $this->httpClient->request($method, $requestUrl, ['headers' => $headers, 'body' => $body]);
 
             return json_decode($response->getContent(), true);
-        } catch (ServerExceptionInterface | ClientExceptionInterface | RedirectionExceptionInterface | TransportExceptionInterface $exception) {
+        } catch (ServerExceptionInterface | ClientExceptionInterface | RedirectionExceptionInterface | TransportExceptionInterface | \Exception $exception) {
             throw new SpotifyArtistsAPIException(
                 'API request: (' . $service . '), ' . $exception->getMessage(),
                 $exception->getCode()
