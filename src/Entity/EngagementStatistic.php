@@ -130,6 +130,7 @@ class EngagementStatistic
     public function setIntentRate(?float $intentRate): EngagementStatistic
     {
         $this->intentRate = $intentRate;
+
         return $this;
     }
 }
