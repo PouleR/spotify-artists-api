@@ -24,18 +24,18 @@ $loginClient = new \PouleR\SpotifyLogin\SpotifyLoginClient($httpClient);
 $spotifyLogin = new \PouleR\SpotifyLogin\SpotifyLogin($loginClient);
 $spotifyApi = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPI($client, $spotifyLogin);
 
-$spotifyApi->setClientId('clientId');
-$spotifyApi->setDeviceId('deviceId');
+$spotifyLogin->setClientId('clientId');
+$spotifyLogin->setDeviceId('deviceId');
 
 // Log in and get the access token
-$token = $spotifyApi->login('email@address.com','password');
+$token = $spotifyLogin->login('email@address.com','password');
 $spotifyApi->setAccessToken($token->getAccessToken());
 $upcoming = $spotifyApi->getUpcomingReleases('artistId');
 
 print_r($upcoming);
 
 // Use the current token to get a new one
-$newToken = $spotifyApi->refreshToken($token->getUsername(), $token->getRefreshToken());
+$newToken = $spotifyLogin->refreshToken($token->getUsername(), $token->getRefreshToken());
 $spotifyApi->setAccessToken($newToken->getAccessToken());
 
 $realtime = $spotifyApi->getRealTimeStatistics('artistId', 'trackId');

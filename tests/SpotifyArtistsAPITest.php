@@ -39,58 +39,6 @@ class SpotifyArtistsAPITest extends TestCase
     /**
      * @return void
      */
-    public function testClientId(): void
-    {
-        $this->spotifyLogin->expects(self::once())
-            ->method('setClientId')
-            ->with('client.id');
-
-        $this->artistsAPI->setClientId('client.id');
-    }
-
-    /**
-     * @return void
-     */
-    public function testDeviceId(): void
-    {
-        $this->spotifyLogin->expects(self::once())
-            ->method('setDeviceId')
-            ->with('device.id');
-
-        $this->artistsAPI->setDeviceId('device.id');
-    }
-
-    /**
-     * @return void
-     *
-     * @throws SpotifyLoginException
-     */
-    public function testLogin(): void
-    {
-        $this->spotifyLogin->expects(self::once())
-            ->method('login')
-            ->with('username', 'password');
-
-        $this->artistsAPI->login('username', 'password');
-    }
-
-    /**
-     * @return void
-     *
-     * @throws SpotifyLoginException
-     */
-    public function testRefreshToken(): void
-    {
-        $this->spotifyLogin->expects(self::once())
-            ->method('refreshToken')
-            ->with('username', 'refresh');
-
-        $this->artistsAPI->refreshToken('username', 'refresh');
-    }
-
-    /**
-     * @return void
-     */
     public function testRealTimeStatistics(): void
     {
         $this->apiClient->expects(self::once())

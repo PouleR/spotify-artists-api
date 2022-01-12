@@ -47,22 +47,6 @@ class SpotifyArtistsAPI
     }
 
     /**
-     * @param string $clientId
-     */
-    public function setClientId(string $clientId): void
-    {
-        $this->spotifyLogin->setClientId($clientId);
-    }
-
-    /**
-     * @param string $deviceId
-     */
-    public function setDeviceId(string $deviceId): void
-    {
-        $this->spotifyLogin->setDeviceId($deviceId);
-    }
-
-    /**
      * @param string $accessToken
      */
     public function setAccessToken(string $accessToken): void
@@ -274,32 +258,6 @@ class SpotifyArtistsAPI
     public function getRealtimeArtistListenersUrl(string $artistId): string
     {
         return sprintf('wss://artistinsights-realtime3.spotify.com/ws/artist/listeners/%s', $artistId);
-    }
-
-    /**
-     * @param string $username
-     * @param string $refreshToken
-     *
-     * @return AccessToken|null
-     *
-     * @throws SpotifyLoginException
-     */
-    public function refreshToken(string $username, string $refreshToken): ?AccessToken
-    {
-        return $this->spotifyLogin->refreshToken($username, $refreshToken);
-    }
-
-    /**
-     * @param string $username
-     * @param string $password
-     *
-     * @return AccessToken|null
-     *
-     * @throws SpotifyLoginException
-     */
-    public function login(string $username, string $password): ?AccessToken
-    {
-        return $this->spotifyLogin->login($username, $password);
     }
 
     /**
