@@ -6,8 +6,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PouleR\SpotifyArtistsAPI\SpotifyArtistsAPI;
 use PouleR\SpotifyArtistsAPI\SpotifyArtistsAPIClient;
 use PHPUnit\Framework\TestCase;
-use PouleR\SpotifyLogin\Exception\SpotifyLoginException;
-use PouleR\SpotifyLogin\SpotifyLogin;
 
 /**
  * Class SpotifyArtistsAPITest
@@ -19,10 +17,6 @@ class SpotifyArtistsAPITest extends TestCase
      */
     private $apiClient;
 
-    /**
-     * @var MockObject|SpotifyLogin
-     */
-    private $spotifyLogin;
     private SpotifyArtistsAPI $artistsAPI;
 
     /**
@@ -31,8 +25,7 @@ class SpotifyArtistsAPITest extends TestCase
     public function setUp(): void
     {
         $this->apiClient = $this->createMock(SpotifyArtistsAPIClient::class);
-        $this->spotifyLogin = $this->createMock(SpotifyLogin::class);
-        $this->artistsAPI = new SpotifyArtistsAPI($this->apiClient, $this->spotifyLogin);
+        $this->artistsAPI = new SpotifyArtistsAPI($this->apiClient);
         $this->artistsAPI->setAccessToken('access.token');
     }
 

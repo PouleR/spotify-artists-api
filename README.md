@@ -12,31 +12,30 @@ Install it using [Composer](https://getcomposer.org/):
 composer require pouler/spotify-artists-api
 ```
 
+## Spotify login
+You can obtain an access token by using the SpotifyLogin class, this dependency can be installed by using:
+
+```sh
+composer require pouler/spotify-login
+```
+
+For more information about this project see: https://github.com/PouleR/spotify-login
+
 ## Example usage
+
 ```php
 <?php declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
 $httpClient = new \Symfony\Component\HttpClient\CurlHttpClient();
-$client = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPIClient($httpClient);
-$loginClient = new \PouleR\SpotifyLogin\SpotifyLoginClient($httpClient);
-$spotifyLogin = new \PouleR\SpotifyLogin\SpotifyLogin($loginClient);
-$spotifyApi = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPI($client, $spotifyLogin);
+$apiClient = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPIClient($httpClient);
+$spotifyApi = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPI($apiClient);
 
-$spotifyLogin->setClientId('clientId');
-$spotifyLogin->setDeviceId('deviceId');
-
-// Log in and get the access token
-$token = $spotifyLogin->login('email@address.com','password');
-$spotifyApi->setAccessToken($token->getAccessToken());
+$spotifyApi->setAccessToken('token');
 $upcoming = $spotifyApi->getUpcomingReleases('artistId');
 
 print_r($upcoming);
-
-// Use the current token to get a new one
-$newToken = $spotifyLogin->refreshToken($token->getUsername(), $token->getRefreshToken());
-$spotifyApi->setAccessToken($newToken->getAccessToken());
 
 $realtime = $spotifyApi->getRealTimeStatistics('artistId', 'trackId');
 

@@ -9,9 +9,6 @@ use PouleR\SpotifyArtistsAPI\Entity\RealTimeStatistics;
 use PouleR\SpotifyArtistsAPI\Entity\RecordingStatistic;
 use PouleR\SpotifyArtistsAPI\Entity\UpcomingRelease;
 use PouleR\SpotifyArtistsAPI\Exception\SpotifyArtistsAPIException;
-use PouleR\SpotifyLogin\Entity\AccessToken;
-use PouleR\SpotifyLogin\Exception\SpotifyLoginException;
-use PouleR\SpotifyLogin\SpotifyLogin;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
@@ -24,19 +21,16 @@ use Throwable;
 class SpotifyArtistsAPI
 {
     protected SpotifyArtistsAPIClient $client;
-    protected SpotifyLogin $spotifyLogin;
     protected ?LoggerInterface $logger = null;
     protected ObjectNormalizer $normalizer;
 
     /**
      * @param SpotifyArtistsAPIClient $client
-     * @param SpotifyLogin            $spotifyLogin
      * @param LoggerInterface|null    $logger
      */
-    public function __construct(SpotifyArtistsAPIClient $client, SpotifyLogin $spotifyLogin, LoggerInterface $logger = null)
+    public function __construct(SpotifyArtistsAPIClient $client, LoggerInterface $logger = null)
     {
         $this->client = $client;
-        $this->spotifyLogin = $spotifyLogin;
         $this->logger = $logger;
 
         if (!$logger) {
