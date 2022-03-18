@@ -85,6 +85,10 @@ class SpotifyArtistsAPI
                 'https://generic.wg.spotify.com/upcoming-view-service/v1/artist/'
             );
 
+            if (!array_key_exists('upcoming_releases', $response)) {
+                return [];
+            }
+
             foreach ($response['upcoming_releases'] as $upcoming) {
                 if (!$upcoming['release']) {
                     continue;
@@ -119,6 +123,10 @@ class SpotifyArtistsAPI
                 $path,
                 'https://generic.wg.spotify.com/s4x-insights-api/v2/artist/'
             );
+
+            if (!array_key_exists('recordingStats', $response)) {
+                return [];
+            }
 
             foreach ($response['recordingStats'] as $recording) {
                 if (!$recording) {

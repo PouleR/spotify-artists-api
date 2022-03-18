@@ -41,7 +41,7 @@ class SpotifyArtistsAPIClient
      * @param array                                       $headers
      * @param array|string|resource|\Traversable|\Closure $body
      *
-     * @return object
+     * @return array
      *
      * @throws SpotifyArtistsAPIException
      */
