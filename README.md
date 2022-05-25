@@ -30,14 +30,24 @@ require 'vendor/autoload.php';
 
 $httpClient = new \Symfony\Component\HttpClient\CurlHttpClient();
 $apiClient = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPIClient($httpClient);
-$spotifyApi = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPI($apiClient);
+$artistsApi = new \PouleR\SpotifyArtistsAPI\SpotifyArtistsAPI($apiClient);
 
-$spotifyApi->setAccessToken('token');
-$upcoming = $spotifyApi->getUpcomingReleases('artistId');
+$loginClient = new \PouleR\SpotifyLogin\SpotifyLoginClient($httpClient);
+$spotifyLogin = new \PouleR\SpotifyLogin\SpotifyLogin($loginClient);
+
+$spotifyLogin->setClientId('clientId');
+$spotifyLogin->setDeviceId('deviceId');
+
+// Log in and get the access token
+$accessToken = $spotifyLogin->login('email@address.com','password');
+
+// Use this token for the artists API
+$artistsApi->setAccessToken($accessToken);
+$upcoming = $artistsApi->getUpcomingReleases('artistId');
 
 print_r($upcoming);
 
-$realtime = $spotifyApi->getRealTimeStatistics('artistId', 'trackId');
+$realtime = $artistsApi->getRealTimeStatistics('artistId', 'trackId');
 
 print_r($realtime);
 ```
