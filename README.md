@@ -3,7 +3,7 @@
 This is a PHP wrapper for the (unofficial) Spotify Artists API.
 
 ## Requirements
-* PHP ^7.4|^8.0
+* PHP >=8.1
 
 ## Installation
 Install it using [Composer](https://getcomposer.org/):

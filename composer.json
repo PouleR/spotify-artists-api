@@ -19,11 +19,12 @@
         "phpunit/phpunit": "^9"
     },
     "require": {
-        "php": "^7.4|^8.0",
+        "php": ">=8.1",
         "ext-json": "*",
-        "symfony/http-client": "^4.3|^4.4|^5.0|^6",
-        "symfony/property-access": "^4.3|^4.4|^5|^6",
-        "symfony/serializer": "^4.3|^4.4|^5|^6"
+        "pouler/spotify-login": "^0.3",
+        "symfony/http-client": "^5.4|^6",
+        "symfony/property-access": "^5.4|^6",
+        "symfony/serializer": "^5.4|^6"
     },
     "suggest": {
         "pouler/spotify-login": "To obtain an access token to be used in API calls"
