@@ -12,11 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 class SpotifyArtistsAPITest extends TestCase
 {
-    /**
-     * @var MockObject|SpotifyArtistsAPIClient
-     */
-    private $apiClient;
-
+    private SpotifyArtistsAPIClient|MockObject $apiClient;
     private SpotifyArtistsAPI $artistsAPI;
 
     /**
@@ -37,7 +33,7 @@ class SpotifyArtistsAPITest extends TestCase
         $this->apiClient->expects(self::once())
             ->method('apiRequest')
             ->with('GET', 'artist/recording/track/realtime')
-            ->willReturn(new \stdClass());
+            ->willReturn([]);
 
         $this->artistsAPI->getRealTimeStatistics('artist', 'track');
     }

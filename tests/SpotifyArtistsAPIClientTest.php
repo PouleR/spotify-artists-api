@@ -14,10 +14,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class SpotifyArtistsAPIClientTest extends TestCase
 {
-    /**
-     * @var MockObject|HttpClientInterface
-     */
-    private $httpClient;
+    private HttpClientInterface|MockObject $httpClient;
     private SpotifyArtistsAPIClient $apiClient;
 
     /**

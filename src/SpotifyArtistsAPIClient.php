@@ -15,15 +15,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class SpotifyArtistsAPIClient
 {
     private const ARTISTS_API_URL = 'https://generic.wg.spotify.com/s4x-insights-api/v1/artist/';
-    protected HttpClientInterface $httpClient;
     protected string $accessToken = '';
 
     /**
      * @param HttpClientInterface $httpClient
      */
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(protected HttpClientInterface $httpClient)
     {
-        $this->httpClient = $httpClient;
     }
 
     /**
@@ -45,7 +43,7 @@ class SpotifyArtistsAPIClient
      *
      * @throws SpotifyArtistsAPIException
      */
-    public function apiRequest(string $method, string $service, string $baseUrl = null, array $headers = [], $body = null)
+    public function apiRequest(string $method, string $service, string $baseUrl = null, array $headers = [], $body = null): array
     {
         $requestUrl = sprintf('%s%s', empty($baseUrl) ? self::ARTISTS_API_URL : $baseUrl, $service);
 

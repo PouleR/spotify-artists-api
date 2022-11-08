@@ -20,19 +20,14 @@ use Throwable;
  */
 class SpotifyArtistsAPI
 {
-    protected SpotifyArtistsAPIClient $client;
-    protected ?LoggerInterface $logger = null;
     protected ObjectNormalizer $normalizer;
 
     /**
      * @param SpotifyArtistsAPIClient $client
      * @param LoggerInterface|null    $logger
      */
-    public function __construct(SpotifyArtistsAPIClient $client, LoggerInterface $logger = null)
+    public function __construct(protected SpotifyArtistsAPIClient $client, protected ?LoggerInterface $logger = null)
     {
-        $this->client = $client;
-        $this->logger = $logger;
-
         if (!$logger) {
             $this->logger = new NullLogger();
         }
@@ -266,7 +261,7 @@ class SpotifyArtistsAPI
      * @param string     $method
      * @param Throwable $exception
      */
-    private function logError(string $method, Throwable $exception)
+    private function logError(string $method, Throwable $exception): void
     {
         $this->logger->error('Error during API Request', [
             'method' => $method,
