@@ -4,6 +4,7 @@ namespace PouleR\SpotifyArtistsAPI;
 
 use Exception;
 use PouleR\SpotifyArtistsAPI\Entity\EngagementStatistic;
+use PouleR\SpotifyArtistsAPI\Entity\FanaticReleaseEngagement;
 use PouleR\SpotifyArtistsAPI\Entity\PlaylistStatistics;
 use PouleR\SpotifyArtistsAPI\Entity\RealTimeStatistics;
 use PouleR\SpotifyArtistsAPI\Entity\RecordingStatistic;
@@ -255,6 +256,41 @@ class SpotifyArtistsAPI
     public function getRealtimeArtistListenersUrl(string $artistId): string
     {
         return sprintf('wss://artistinsights-realtime3.spotify.com/ws/artist/listeners/%s', $artistId);
+    }
+
+
+    /**
+     * @param string      $artistId
+     * @param string      $albumId
+     * @param string|null $countryCode
+     *
+     * @return FanaticReleaseEngagement|null
+     *
+     * @throws SpotifyArtistsAPIException
+     *
+     * Please note: this feature is in beta at Spotify
+     */
+    public function getFanaticReleaseEngagement(string $artistId, string $albumId, ?string $countryCode = null): ?FanaticReleaseEngagement
+    {
+        try {
+            $path = sprintf('%s/release/%s', $artistId, $albumId);
+
+            if (!empty($countryCode)) {
+                $path .= sprintf('?country=%s', $countryCode);
+            }
+
+            $response = $this->client->apiRequest(
+                'GET',
+                $path,
+                'https://exp.wg.spotify.com/fanatic-release-engagement/v1/artist/'
+            );
+
+            return $this->normalizer->denormalize($response, FanaticReleaseEngagement::class);
+        } catch (Exception | Throwable $exception) {
+            $this->logError(__FUNCTION__, $exception);
+        }
+
+        return null;
     }
 
     /**

@@ -38,7 +38,6 @@ class SpotifyArtistsAPITest extends TestCase
         $this->artistsAPI->getRealTimeStatistics('artist', 'track');
     }
 
-
     /**
      * @return void
      */
@@ -56,5 +55,18 @@ class SpotifyArtistsAPITest extends TestCase
             ->willReturn($response);
 
         self::assertCount(2, $this->artistsAPI->getUpcomingReleases('artistId'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testFanaticReleaseEngagement(): void
+    {
+        $this->apiClient->expects(self::once())
+            ->method('apiRequest')
+            ->with('GET', 'artist/release/album?country=US', 'https://exp.wg.spotify.com/fanatic-release-engagement/v1/artist/')
+            ->willReturn([]);
+
+        $this->artistsAPI->getFanaticReleaseEngagement('artist', 'album', 'US');
     }
 }
